@@ -1,0 +1,58 @@
+'use client';
+
+import { createContext, useContext, useEffect, useState } from 'react';
+
+const AdminContext = createContext();
+
+export const AdminProvider = ({ children }) => {
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          // Unauthorized: Token invalid ya expired
+          localStorage.removeItem("token");
+          setUserInfo(null);
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Role check kar lo, sirf admin ko allow karna hai
+        if (data.role && data.role.toLowerCase() === "admin") {
+          setUserInfo(data);
+        } else {
+          // Agar admin nahi, toh token hata do aur userInfo null karo
+          localStorage.removeItem("token");
+          setUserInfo(null);
+          throw new Error("Access denied: Not an admin");
+        }
+      })
+      .catch((error) => {
+        console.error("AdminContext error:", error.message || error);
+        setUserInfo(null);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <AdminContext.Provider value={{ userInfo, setUserInfo, loading }}>
+      {children}
+    </AdminContext.Provider>
+  );
+};
+
+export const useAdminContext = () => useContext(AdminContext);

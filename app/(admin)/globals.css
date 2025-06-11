@@ -1,0 +1,816 @@
+/* Reset and base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Layout wrapper */
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #1e1e2f;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+}
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.sidebar nav ul {
+  list-style: none;
+}
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+.sidebar nav ul li a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+.sidebar nav ul li a:hover {
+  color: white;
+  font-weight: bold;
+}
+
+/* Main area */
+.main-area {
+  margin-left: 220px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+
+
+/* Header */
+.header {
+  background-color: #ffffff;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.header h1 {
+  font-size: 24px;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Footer */
+.footer {
+  background-color: #ffffff;
+  text-align: center;
+  padding: 15px 0;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+}
+
+
+
+
+
+/* Wrapper to center the login form absolutely over the entire viewport */
+.login-wrapper {
+  position: fixed;       /* fixed so it ignores parent containers */
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(243, 244, 246, 0.8); /* semi-transparent backdrop */
+  z-index: 999;          /* on top of everything */
+}
+
+/* Card containing the login form */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 2rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* Heading and subheading styling */
+.login-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-heading h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.login-heading p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Form styling */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Each input field */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  color: #111827;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Error messages */
+.error-text {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Submit button */
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.login-button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Links */
+.link-text {
+  text-align: center;
+  font-size: 0.875rem;
+  padding-top: 1.5rem;
+  color: #6b7280;
+}
+
+.link-text a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-user .login-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid white;
+  background-color: #0e3a66;
+  color: white;
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.header-user .login-btn:hover {
+  background-color: #145d9f;
+}
+
+
+/* Force toast error red */
+.error-message {
+  color: #dc2626; /* Tailwind red-600 */
+  font-weight: 600;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+
+
+
+
+/* book now */
+
+/* General page styling */
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 30px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Page heading */
+.heading {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #333;
+}
+
+/* Table container */
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+
+/* Booking table */
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.booking-table th,
+.booking-table td {
+  text-align: center;
+  padding: 12px 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.booking-table th {
+  background-color: #f1f1f1;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.booking-table td img {
+  max-width: 100px;
+  border-radius: 10px;
+}
+
+/* Buttons */
+button {
+  padding: 8px 14px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Delete Button - Red */
+button:has(svg[fill="red"]),
+button:contains("Delete") {
+  background-color: #dc3545;
+}
+
+button:has(svg[fill="red"]):hover,
+button:contains("Delete"):hover {
+  background-color: #c82333;
+}
+
+/* Filter input */
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Modal overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Booking modal form */
+.booking-form {
+  background-color: white;
+  padding: 25px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.booking-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.booking-form p {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+/* Seat Counter */
+.booking-form div {
+  justify-content: center;
+  align-items: center;
+}
+
+.booking-form span {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Action Buttons inside table */
+.booking-table td button {
+  margin: 4px;
+}
+
+/* Responsive tweaks */
+@media screen and (max-width: 768px) {
+  .booking-table th,
+  .booking-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .heading {
+    font-size: 24px;
+  }
+
+  .booking-form {
+    padding: 15px;
+  }
+
+  .booking-form h2 {
+    font-size: 20px;
+  }
+}
+
+
+
+
+/*      book now      */
+
+.table-container {
+  margin: 20px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.booking-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.booking-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.booking-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.booking-table td img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.booking-table .book-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.booking-table .book-btn:hover {
+  background-color: #218838;
+}
+
+.booking-table .action-btn {
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.booking-table .action-btn:hover {
+  background-color: #e0a800;
+}
+
+
+/* profile */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+}
+
+.sidebar nav ul li {
+  margin: 10px 0;
+}
+
+.sidebar nav ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+  background-color: #34495e;
+}
+
+/* Main Area Styles */
+.main-area {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f4f6f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+
+
+.login-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative; /* Ensure dropdown is positioned relative to this container */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-info:hover {
+  background-color: #bdc3c7;
+}
+
+.user-info span {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 50px; /* Increased top margin to push the dropdown lower */
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.dropdown-menu a,
+.dropdown-menu p {
+  padding: 10px;
+  font-size: 14px;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu p:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu p {
+  border-top: 1px solid #ccc;
+}
+
+.dropdown-menu a:first-child {
+  border-top: none;
+}
+
+
+/* booking add css  */
+
+.form-container {
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.back-button {
+  margin-bottom: 10px;
+  background: #2980b9;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #2980b9;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+
+/* book - now edit */
+
+.edit-travel-form {
+  padding: 20px;
+  max-width: 500px;
+  margin: 2rem auto;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-travel-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.edit-travel-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.edit-travel-form label input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.edit-travel-form button {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+
+/* booking  */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.heading {
+  font-size: 32px;
+  font-weight: bold;
+  color: rgb(17, 18, 19);
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px white;
+}
+
+.table-container {
+  width: 100%;
+  max-width: 80%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(11, 11, 11, 0.2);
+  overflow-x: auto;
+  margin-bottom: 40px;
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+}
+
+.booking-table thead tr {
+  background: linear-gradient(to right, #3498db, #2980b9);
+  color: white;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.booking-table tbody tr:hover {
+  background-color: #f0f8ff;
+  transition: background 0.3s;
+}

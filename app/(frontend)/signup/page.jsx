@@ -90,7 +90,7 @@ export default function SignupPage() {
 
     try {
       // 🔽 FastAPI signup API call
-      const res = await fetch(`http://localhost:8000/auth/register`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

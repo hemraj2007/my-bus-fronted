@@ -18,7 +18,7 @@ export default function BookNow() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/travels/all`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/all`);
         const data = await res.json();
         const arr = Array.isArray(data) ? data : [];
         setBookings(arr);

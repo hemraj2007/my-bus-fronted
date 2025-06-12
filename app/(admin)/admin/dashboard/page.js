@@ -10,16 +10,16 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Fetch all travels
-    fetch(`http://localhost:8000/travels/all`)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/all`)
       .then(res => res.json())
       .then(data => setTravelCount(data.length));
 
     // Fetch all bookings
-    fetch(`http://localhost:8000/booking/bookings`)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/booking/bookings`)
       .then(res => res.json())
       .then(data => setBookingCount(data.length));
 
-    fetch(`http://localhost:8000/users/users`)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/users`)
       .then(res => res.json())
       .then(data => setUserCount(data.length));
 

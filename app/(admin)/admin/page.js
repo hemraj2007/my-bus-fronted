@@ -39,7 +39,7 @@ export default function LoginPage() {
     try {
       console.log("Login Payload:", data);
 
-      const response = await fetch(`http://localhost:8000/auth/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -55,7 +55,7 @@ export default function LoginPage() {
 
       localStorage.setItem("token", result.access_token);
 
-      const profileResponse = await fetch(`http://localhost:8000/users/profile`, {
+      const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
         headers: {
           Authorization: `Bearer ${result.access_token}`,
         },

@@ -38,7 +38,7 @@ function AdminLayout({ children }) {
     const token = localStorage.getItem("token");
     if (token && !userInfo && !loading) {
       // If token exists but userInfo is null, fetch user profile
-      fetch(`http://localhost:8000/users/profile`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

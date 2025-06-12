@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:8000/users/profile`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

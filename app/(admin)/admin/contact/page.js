@@ -8,7 +8,7 @@ export default function ContactList() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/contact/get all");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contact/get all`);
         const data = await res.json();
         setContacts(data);
       } catch (error) {

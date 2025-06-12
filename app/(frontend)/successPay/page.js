@@ -29,7 +29,7 @@ export default function SuccessPay() {
         } = session.metadata;
 
         // 3. Backend me booking POST karo
-        const bookingRes = await fetch(`http://127.0.0.1:8000/booking/bookings`, {
+        const bookingRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/booking/bookings`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

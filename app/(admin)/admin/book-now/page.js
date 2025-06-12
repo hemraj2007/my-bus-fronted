@@ -22,7 +22,7 @@ export default function BookNow() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/travels/all`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/all`);
         const data = await res.json();
         setBookings(data);
         setFiltered(data);
@@ -86,7 +86,7 @@ export default function BookNow() {
     if (!confirmed) return;
 
     try {
-      await fetch(`http://localhost:8000/travels/travels/delete/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/travels/delete/${id}`, {
         method: "DELETE",
       });
       toast.success("Deleted successfully!");

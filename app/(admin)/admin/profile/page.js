@@ -19,7 +19,7 @@ export default function Profile() {
     }
 
     try {
-      const res = await fetch(`http://localhost:8000/users/profile`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function Profile() {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     try {
-      const res = await fetch(`http://localhost:8000/users/update_profile`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/update_profile`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

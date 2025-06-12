@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Suspense } from "react";
+
 
 export default function BookingPage() {
   const [bookings, setBookings] = useState([]);
@@ -48,7 +50,8 @@ export default function BookingPage() {
     fetchUserBookings();
   }, [searchParams, router]);
 
-  return (
+return (
+  <Suspense fallback={<div>Loading...</div>}>
     <div className="booking-wrapper">
       <h1 className="booking-heading">My Booking History</h1>
 
@@ -91,5 +94,7 @@ export default function BookingPage() {
         )}
       </div>
     </div>
-  );
+  </Suspense>
+);
+
 }

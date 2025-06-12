@@ -1,18 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Suspense } from "react";
 
-
-export default function BookingPage() {
+function BookingClient() {
   const [bookings, setBookings] = useState([]);
   const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const paymentStatus = searchParams.get("payment");
     const bookingId = searchParams.get("booking_id");
 
@@ -50,12 +47,11 @@ export default function BookingPage() {
     fetchUserBookings();
   }, [searchParams, router]);
 
-return (
-  <Suspense fallback={<div>Loading...</div>}>
+  return (
     <div className="booking-wrapper">
       <h1 className="booking-heading">My Booking History</h1>
 
-      {typeof window !== "undefined" && searchParams.get("payment") === "success" && (
+      {searchParams.get("payment") === "success" && (
         <div className="booking-success-banner">
           ✅ Booking Successful! Thank you for your purchase.
         </div>
@@ -94,7 +90,14 @@ return (
         )}
       </div>
     </div>
-  </Suspense>
-);
+  );
+}
 
+// ✅ Page component that wraps BookingClient in Suspense
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingClient />
+    </Suspense>
+  );
 }

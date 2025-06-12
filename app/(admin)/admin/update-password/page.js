@@ -1,65 +1,71 @@
+// app/(admin)/update-password/page.jsx
+
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const UpdatePassword = () => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [msg, setMsg] = useState('');
   const router = useRouter();
 
-  const handleUpdatePassword = async () => {
-    if (newPassword !== confirmPassword) {
-      setMessage("Passwords do not match.");
+  const handleUpdate = async () => {
+    if (newPass !== confirmPass) {
+      setMsg("❌ Passwords do not match.");
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      setMessage("Please login first.");
+      setMsg("⚠️ Please login first.");
       return;
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/update_password`, {
+    const res = await fetch(`http://localhost:8000/users/update_password`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
-        new_password: newPassword,
-        confirm_password: confirmPassword
+        new_password: newPass,
+        confirm_password: confirmPass
       })
     });
 
     const data = await res.json();
     if (res.ok) {
-      setMessage("Password updated successfully!");
-      setNewPassword('');
-      setConfirmPassword('');
+      setMsg("✅ Password updated successfully!");
+      setNewPass('');
+      setConfirmPass('');
       setTimeout(() => router.push('/admin/profile'), 2000);
     } else {
-      setMessage(data.detail || "Failed to update password.");
+      setMsg(data.detail || "❌ Failed to update password.");
     }
   };
 
   return (
-    <div className="update-password-page">
-      <h2>Update Password</h2>
+    <div className="password-container">
+      <h2 className="password-heading">🔒 Update Password</h2>
       <input
+        className="password-input"
         type="password"
         placeholder="New Password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
+        value={newPass}
+        onChange={(e) => setNewPass(e.target.value)}
       />
       <input
+        className="password-input"
         type="password"
         placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        value={confirmPass}
+        onChange={(e) => setConfirmPass(e.target.value)}
       />
-      <button onClick={handleUpdatePassword}>Update Password</button>
-      <p>{message}</p>
+      <button className="password-btn" onClick={handleUpdate}>
+        ✅ Update Password
+      </button>
+      <p className="password-message">{msg}</p>
     </div>
   );
 };

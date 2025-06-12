@@ -116,6 +116,15 @@ body {
   border: 1px solid #e5e7eb;
 }
 
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full viewport height */
+  background-color: #f8f9fa; /* light background (optional) */
+  padding: 1rem;
+}
+
 /* Heading and subheading styling */
 .login-heading {
   text-align: center;
@@ -813,4 +822,176 @@ input {
 .booking-table tbody tr:hover {
   background-color: #f0f8ff;
   transition: background 0.3s;
+}
+
+
+
+/* admin login */
+
+/* Layout */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #ebf4ff, #e0e7ff);
+}
+
+@media (min-width: 768px) {
+  .profile-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+/* Card Style */
+.profile-card,
+.edit-form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.profile-card h2,
+.edit-form h2 {
+  font-size: 1.5rem;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+}
+
+/* Button Style */
+.button-primary {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+  background-color: #4338ca;
+}
+
+/* Input Field */
+.edit-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.edit-form input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+.edit-form input[disabled] {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.success-message {
+  color: #16a34a;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Loading/Error Page */
+.profile-loading,
+.profile-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.profile-loading p,
+.profile-error p {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+
+/* admin upde password */
+
+.password-container {
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f0f4ff, #dbeafe);
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.password-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1e40af;
+}
+
+.password-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px #bfdbfe;
+}
+
+.password-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #10b981;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.password-btn:hover {
+  background-color: #059669;
+}
+
+.password-message {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1f2937;
 }

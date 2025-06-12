@@ -20,7 +20,7 @@ const UpdatePassword = () => {
       return;
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/update_password`, {
+    const res = await fetch(`http://localhost:8000/users/update_password`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

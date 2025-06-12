@@ -61,7 +61,7 @@ export default function AddTravel() {
     const isoTime = convertToISOTime(form.time);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/add`, {
+      const res = await fetch(`http://localhost:8000/travels/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

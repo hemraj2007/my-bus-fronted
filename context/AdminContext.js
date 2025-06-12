@@ -8,45 +8,48 @@ export const AdminProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  
+  if (!token) {
+    setLoading(false);
+    return;
+  }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          // Unauthorized: Token invalid ya expired
-          localStorage.removeItem("token");
-          setUserInfo(null);
-          throw new Error("Unauthorized");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        // Role check kar lo, sirf admin ko allow karna hai
-        if (data.role && data.role.toLowerCase() === "admin") {
-          setUserInfo(data);
-        } else {
-          // Agar admin nahi, toh token hata do aur userInfo null karo
-          localStorage.removeItem("token");
-          setUserInfo(null);
-          throw new Error("Access denied: Not an admin");
-        }
-      })
-      .catch((error) => {
-        console.error("AdminContext error:", error.message || error);
+  // Agar token hai toh profile fetch karo
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
         setUserInfo(null);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+        throw new Error("Unauthorized");
+      }
+
+      const data = await res.json();
+      
+      if (data.role && data.role.toLowerCase() === "admin") {
+        setUserInfo(data);
+      } else {
+        localStorage.removeItem("token");
+        setUserInfo(null);
+        throw new Error("Access denied: Not an admin");
+      }
+    } catch (error) {
+      console.error("AdminContext error:", error.message || error);
+      setUserInfo(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProfile();
+}, []);
 
   return (
     <AdminContext.Provider value={{ userInfo, setUserInfo, loading }}>

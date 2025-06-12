@@ -90,7 +90,7 @@ export default function SignupPage() {
 
     try {
       // 🔽 FastAPI signup API call
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
+      const res = await fetch(`http://localhost:8000/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -115,16 +115,16 @@ export default function SignupPage() {
 
   // 🔽 Signup form return (UI part)
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4">
-      <Card className="w-full max-w-md shadow-xl rounded-2xl border border-gray-200">
-        <CardContent className="px-6 py-8 space-y-6">
+    <div className="auth-container">
+      <Card className="auth-card">
+        <CardContent className="auth-card-content">
 
-          {/* 🔽 Heading section */}
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-gray-900">Create Account</h1>
-            <p className="text-gray-600 text-sm">Join us by filling in your details</p>
+          <div className="auth-heading">
+            <h1 className="auth-title">Create Account</h1>
+            <p className="auth-subtitle">Join us by filling in your details</p>
           </div>
-          <div>
+
+          <div className="auth-field">
             <Label htmlFor="role">Role</Label>
             <input
               type="text"
@@ -132,19 +132,15 @@ export default function SignupPage() {
               name="role"
               value="user"
               readOnly
-              className="w-full p-2 border rounded-md text-sm bg-gray-100 text-gray-700"
+              className="auth-input readonly"
             />
-            {errors.role && <p className="text-red-600 text-xs mt-1">{errors.role}</p>}
+            {errors.role && <p className="auth-error">{errors.role}</p>}
           </div>
 
-
-          {/* 🔽 Form start */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* 🔽 Form fields (dynamic rendering using map) */}
-            <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="auth-field-group">
               {["name", "email", "password", "mob_number"].map((field) => (
-                <div key={field}>
+                <div key={field} className="auth-field">
                   <Label htmlFor={field}>
                     {field === "mob_number" ? "Mobile Number" : field.charAt(0).toUpperCase() + field.slice(1)}
                   </Label>
@@ -155,36 +151,31 @@ export default function SignupPage() {
                     placeholder={`Enter your ${field}`}
                     value={form[field]}
                     onChange={handleChange}
+                    className="auth-input"
                   />
-                  {/* 🔽 Field-wise error show */}
-                  {errors[field] && <p className="text-red-600 text-xs mt-1">{errors[field]}</p>}
+                  {errors[field] && <p className="auth-error">{errors[field]}</p>}
                 </div>
               ))}
             </div>
 
-            {/* 🔽 Submit button */}
-            <Button
-              type="submit"
-              className="w-full flex items-center justify-center gap-2"
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="auth-button" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
-                  <ReloadIcon className="h-4 w-4 animate-spin" />
+                  <ReloadIcon className="loader-icon" />
                   <span>Creating account...</span>
                 </>
               ) : "Sign up"}
             </Button>
           </form>
 
-          {/* 🔽 Login page link */}
-          <div className="text-center text-sm pt-4">
-            <span className="text-gray-600">Already have an account? </span>
-            <Link href="/login" className="text-blue-600 hover:underline">Sign in</Link>
+          <div className="auth-footer">
+            <span>Already have an account? </span>
+            <Link href="/login" className="auth-link">Sign in</Link>
           </div>
 
         </CardContent>
       </Card>
     </div>
+
   );
 }

@@ -7,36 +7,51 @@ export default function SuccessPay() {
   const params = useSearchParams();
   const router = useRouter();
   const sessionId = params.get("session_id");
+  const today = new Date().toISOString().split('T')[0]; 
 
   useEffect(() => {
     const saveBooking = async () => {
       try {
-        // 1. Stripe se payment details lo
+        // 1. Stripe session fetch karo
         const sessionRes = await fetch(`/api/stripe/session?session_id=${sessionId}`);
         const session = await sessionRes.json();
 
-        // 2. Database mein save karo
-        const bookingRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/booking/bookings`, {
+        if (!session?.metadata) throw new Error("Stripe session metadata missing!");
+
+        // 2. Metadata extract and clean karo
+        const {
+          user_id,
+          from_location,
+          to_location,
+          seats,
+          price_per_seat,
+          amount
+        } = session.metadata;
+
+        // 3. Backend me booking POST karo
+        const bookingRes = await fetch(`http://127.0.0.1:8000/booking/bookings`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`
           },
           body: JSON.stringify({
-            user_id: session.metadata.user_id,
-            from_location: session.metadata.from_location,
-            to_location: session.metadata.to_location,
-            seats: session.metadata.seats,
-            price_per_seat: session.metadata.price_per_seat,
-            total_price: session.metadata.amount
+            user_id: parseInt(user_id),
+            from_location,
+            to_location,
+            seats: parseInt(seats),
+            price_per_seat: parseFloat(price_per_seat),
+            total_price: parseFloat(amount),
+            travel_date: today
           })
         });
 
         if (!bookingRes.ok) throw new Error("Booking save nahi hui");
 
-        // 3. Bookings page pe redirect karo
+        // 4. Redirect after success
         router.push("/booking?payment=success");
       } catch (error) {
+        console.error("Booking Save Error:", error);
         toast.error(`Error: ${error.message}`);
         router.push("/book-now");
       }

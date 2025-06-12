@@ -1,57 +1,42 @@
-'use client'; // Next.js ko batata hai ki yeh client-side component hai
+'use client';
 
-// React Hook Form se form validation ke liye useForm import kar rahe hain
+
 import { useForm } from "react-hook-form";
-// Zod se schema validation likhne ke liye import kar rahe hain
 import { z } from "zod";
-// Zod ko React Hook Form ke saath integrate karne ke liye
 import { zodResolver } from "@hookform/resolvers/zod";
-
-// UI ke liye components (Card, Input, Button, etc.)
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ReloadIcon } from "@radix-ui/react-icons"; // Spinner icon for loading (ghoomta h) 
+import { ReloadIcon } from "@radix-ui/react-icons";
 
-// Page navigation ke liye
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// Toast notification ke liye
 import { toast } from "sonner";
 
-import { useEffect } from "react";
-
-// ✅ Zod schema define kar rahe hain form ke liye
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 });
 
-// Login page ka main component
 export default function LoginPage() {
-  const router = useRouter(); // Page navigate karne ke liye
+  const router = useRouter();
 
-  // useForm se form handle kar rahe hain aur validation resolver laga rahe hain
   const {
-    register,           // input fields ko form se bind karta hai
-    handleSubmit,       // form submit handler
-    formState: { errors, isSubmitting }, // form errors aur loading state
-    setError,           // custom error set karne ke liye
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
   } = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  // ✅ Form submit hone par backend se login API call
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+      const response = await fetch(`http://localhost:8000/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data), // user data bhejna
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
@@ -61,24 +46,39 @@ export default function LoginPage() {
         throw new Error(result.detail || "Login failed");
       }
 
-      // if (result.role !== "user") {
-      //   toast.error("Only users are allowed to login.");
-      //   throw new Error("Access denied. Only users can login.");
-      // }
-
-      // 🔐 Token localStorage me save karna
       localStorage.setItem("token", result.access_token);
 
-      // 🔁 Event dispatch karna taaki dusre components (jaise navbar) token change detect kar saken
+      const profileRes = await fetch(`http://localhost:8000/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${result.access_token}`,
+        },
+      });
+
+      const profileData = await profileRes.json();
+
+      if (!profileRes.ok || !profileData.role) {
+        throw new Error("Failed to fetch profile");
+      }
+
+      if (profileData.role !== "user") {
+        localStorage.removeItem("token");
+        toast.error("🚫 Only normal users are allowed to login here", {
+          style: {
+            background: "#ffe5e5",
+            color: "#b30000",
+            fontWeight: "bold",
+            border: "1px solid #b30000",
+          },
+          duration: 5000,
+        });
+        return;
+      }
+
       window.dispatchEvent(new Event("tokenSet"));
-
-      toast.success("Login successful!");
-
-      // ✅ Login ke baad redirect to products page
-      router.push("/");
+      toast.success("🎉 Login successful!");
+      router.push("/profile");
 
     } catch (error) {
-      // Agar error aata hai toh form ke root level pe error dikhana
       setError("root", {
         type: "manual",
         message: error.message || "Something went wrong.",
@@ -87,34 +87,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-      {/* Card box jisme login form hai */}
-      <Card className="w-full max-w-md shadow-xl rounded-2xl border border-gray-200">
-        <CardContent className="px-6 py-8 space-y-6">
-          {/* Heading and welcome text */}
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-            <p className="text-gray-600 text-sm">Please sign in to your account</p>
+    <div className="login-page-wrapper">
+      <Card className="login-card">
+        <CardContent className="login-card-content">
+          <div className="login-header">
+            <h1 className="login-title">Welcome Back</h1>
+            <p className="login-subtitle">Please sign in to your account</p>
           </div>
 
-          {/* Login form start */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div className="space-y-4">
-              {/* Email field */}
+          <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+            <div className="login-form-group">
               <div>
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  {...register("email")} // useForm ka register
+                  {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                  <p className="login-error">{errors.email.message}</p>
                 )}
               </div>
 
-              {/* Password field */}
               <div>
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -124,13 +119,12 @@ export default function LoginPage() {
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>
+                  <p className="login-error">{errors.password.message}</p>
                 )}
               </div>
             </div>
 
-            {/* Submit button with loading spinner */}
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="login-submit-btn" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
@@ -141,20 +135,18 @@ export default function LoginPage() {
               )}
             </Button>
 
-            {/* Custom errors dikhana (like API error) */}
             {errors.root && (
-              <p className="text-red-600 text-sm text-center mt-2">{errors.root.message}</p>
+              <p className="login-error login-error-center">{errors.root.message}</p>
             )}
           </form>
 
-          {/* Forgot password and signup links */}
-          <div className="text-center text-sm pt-4">
-            <Link href="/forgot-password" className="text-blue-600 hover:underline">
+          <div className="login-footer">
+            <Link href="/forgot-password" className="login-link">
               Forgot password?
             </Link>
-            <div className="text-gray-600">
+            <div>
               Don’t have an account?{" "}
-              <Link href="/signup" className="text-blue-600 hover:underline">
+              <Link href="/signup" className="login-link">
                 Sign up
               </Link>
             </div>

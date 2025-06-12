@@ -2,38 +2,67 @@
 
 import './globals.css';
 import Link from 'next/link';
-import { AdminProvider } from '../../context/AdminContext'; // ✅ Import AdminProvider
-import { useAdminContext } from '../../context/AdminContext'; // ✅ Updated
+import { AdminProvider } from '../../context/AdminContext';
+import { useAdminContext } from '../../context/AdminContext';
 import { CgUser } from 'react-icons/cg';
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function RootLayout({ children }) {
-  // Now you can safely use AdminContext inside the AdminProvider
   return (
     <AdminProvider>
-      <AdminLayout>{children}</AdminLayout> {/* Wrap everything in AdminProvider */}
+      <AdminLayout>{children}</AdminLayout>
     </AdminProvider>
   );
 }
 
 function AdminLayout({ children }) {
-  const { userInfo, setUserInfo, loading } = useAdminContext(); // ✅ Admin context used
+  const { userInfo, setUserInfo, loading } = useAdminContext();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isLoginPage = pathname === "/admin"; // 🔒 login page only
+
+  // 🔐 Redirect to login if not logged in & not already on login page
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token && !isLoginPage) {
+      router.replace("/admin");
+    }
+  }, [pathname]);
+
+  // Sync user info with localStorage token
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && !userInfo && !loading) {
+      // If token exists but userInfo is null, fetch user profile
+      fetch(`http://localhost:8000/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            localStorage.removeItem("token");
+            return null;
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data?.role?.toLowerCase() === "admin") {
+            setUserInfo(data);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [userInfo, loading, setUserInfo]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserInfo(null);
-    setShowDropdown(false);
-    router.replace('/admin');
-  };
-
-  const handleLogin = () => {
-    // Assuming login logic is handled here and if login is successful:
-    // Redirect user to /admin page
-    router.push('/admin');  // Redirect to admin page
+    router.replace("/admin");
   };
 
   useEffect(() => {
@@ -49,65 +78,73 @@ function AdminLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className="admin-dashboard">
-          {/* Sidebar */}
-          <div className="sidebar">
-            <div className="logo">Admin Panel</div>
-            <nav>
-              <ul>
-                <li><Link href="/admin/dashboard">Dashboard</Link></li>
-                <li><Link href="/admin/book-now">Travels</Link></li>
-                <li><Link href="/admin/booking">Booking</Link></li>
-              </ul>
-            </nav>
+        {/* Show loading state while checking auth */}
+        {loading && !isLoginPage ? (
+          <div className="loading-screen">
+            <div className="loading-spinner"></div>
           </div>
-
-          {/* Right Area */}
-          <div className="main-area">
-            {/* Header */}
-            <header className="header">
-              <h1>Welcome to Admin Panel</h1>
-              <div className="header-user">
-                {userInfo ? (
-                  <div className="user-dropdown" ref={dropdownRef}>
-                    <div
-                      className="user-info"
-                      onClick={() => setShowDropdown((prev) => !prev)} // Toggling dropdown visibility
-                    >
-                      <CgUser size={22} />
-                      <span>{userInfo.name || userInfo.email}</span>
-                    </div>
-
-                    {showDropdown && (
-                      <div className="dropdown-menu">
-                        <Link href="/admin/profile">
-                          <p>Update Profile</p>
-                        </Link>
-                        <Link href="/admin/update-password">
-                          <p>Update Password</p>
-                        </Link>
-                        <p onClick={handleLogout}>Logout</p>
-                      </div>
-                    )}
+        ) : (
+          <>
+            {/* Agar login page hai to plain children show karo (no sidebar/header/footer) */}
+            {isLoginPage ? (
+              <>{children}</>
+            ) : (
+              userInfo && (
+                <div className="admin-dashboard">
+                  {/* Sidebar */}
+                  <div className="sidebar">
+                    <div className="logo">Admin Panel</div>
+                    <nav>
+                      <ul>
+                        <li><Link href="/admin/dashboard">Dashboard</Link></li>
+                        <li><Link href="/admin/book-now">Travels</Link></li>
+                        <li><Link href="/admin/booking">Booking</Link></li>
+                      </ul>
+                    </nav>
                   </div>
-                ) : (
-                  // Show Login button if user is not logged in
-                  <button onClick={handleLogin} className="login-btn">Login</button>
-                )}
-              </div>
-            </header>
 
-            {/* Main */}
-            <main className="main-content">
-              {children}
-            </main>
+                  {/* Main Panel */}
+                  <div className="main-area">
+                    {/* Header */}
+                    <header className="header">
+                      <h1>Welcome to Admin Panel</h1>
+                      <div className="header-user">
+                        <div className="user-dropdown" ref={dropdownRef}>
+                          <div
+                            className="user-info"
+                            onClick={() => setShowDropdown((prev) => !prev)}
+                          >
+                            <CgUser size={22} />
+                            <span>{userInfo?.name || userInfo?.email}</span>
+                          </div>
+                          {showDropdown && (
+                            <div className="dropdown-menu">
+                              <Link href="/admin/profile">
+                                <p>Update Profile</p>
+                              </Link>
+                              <Link href="/admin/update-password">
+                                <p>Update Password</p>
+                              </Link>
+                              <p onClick={handleLogout}>Logout</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </header>
 
-            {/* Footer */}
-            <footer className="footer">
-              <p>&copy; 2025 Hemraj Admin Panel. All rights reserved.</p>
-            </footer>
-          </div>
-        </div>
+                    {/* Main Content */}
+                    <main className="main-content">{children}</main>
+
+                    {/* Footer */}
+                    <footer className="footer">
+                      <p>&copy; 2025 Hemraj Admin Panel. All rights reserved.</p>
+                    </footer>
+                  </div>
+                </div>
+              )
+            )}
+          </>
+        )}
       </body>
     </html>
   );

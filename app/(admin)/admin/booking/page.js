@@ -9,7 +9,7 @@ export default function BookingPage() {
   useEffect(() => {
     const fetchUserBookings = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/booking/bookings`, {
+        const res = await fetch(`http://localhost:8000/booking/bookings`, {
           headers: { "Content-Type": "application/json" },
         });
         if (!res.ok) throw new Error("Failed to fetch bookings");

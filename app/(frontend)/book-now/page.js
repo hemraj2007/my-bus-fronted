@@ -18,7 +18,7 @@ export default function BookNow() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/travels/all`);
+        const res = await fetch(`http://localhost:8000/travels/all`);
         const data = await res.json();
         const arr = Array.isArray(data) ? data : [];
         setBookings(arr);
@@ -33,7 +33,7 @@ export default function BookNow() {
   // Re-filter whenever filters or bookings change
   useEffect(() => {
     const lowFrom = fromFilter.trim().toLowerCase();
-    const lowTo   = toFilter.trim().toLowerCase();
+    const lowTo = toFilter.trim().toLowerCase();
     const arr = bookings.filter((b) => {
       return (
         b.from_location.toLowerCase().includes(lowFrom) &&
@@ -55,6 +55,7 @@ export default function BookNow() {
       router.push("/login");
       return;
     }
+
     try {
       const stripe = await getStripe();
       const res = await fetch("/api/stripe", {
@@ -64,20 +65,27 @@ export default function BookNow() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          user_id: selectedBooking.id,
+          user_id: "123", // Hardcoded for now — replace with actual logged-in user_id if you have
+          bus_id: selectedBooking.id,
+          seats: seats,
           amount: selectedBooking.price * seats,
-          name: `${selectedBooking.from_location} → ${selectedBooking.to_location}`,
+          from_location: selectedBooking.from_location,
+          to_location: selectedBooking.to_location,
+          name: `${selectedBooking.from_location} → ${selectedBooking.to_location}`
         }),
       });
+
       if (res.status === 500) return;
+
       const { id: sessionId } = await res.json();
       toast.loading("Redirecting to Payment...");
       await stripe.redirectToCheckout({ sessionId });
     } catch (err) {
-      console.error(err);
+      console.error("Frontend Stripe Error:", err);
       toast.error("Something went wrong!");
     }
   };
+
 
   return (
     <div className="page">
@@ -173,134 +181,7 @@ export default function BookNow() {
       )}
 
       {/* Styling */}
-      <style jsx>{`
-        .page {
-          min-height: 100vh;
-          background: linear-gradient(to right, #74ebd5, #acb6e5);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 40px 20px;
-        }
-        .heading {
-          font-size: 36px;
-          font-weight: bold;
-          color: #2c3e50;
-          margin-bottom: 30px;
-          text-align: center;
-          text-shadow: 1px 1px 2px white;
-        }
-        .table-container {
-          width: 100%;
-          max-width: 1200px;
-          background: white;
-          padding: 20px;
-          border-radius: 15px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-          overflow-x: auto;
-        }
-        .booking-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          font-size: 16px;
-        }
-        thead tr {
-          background: linear-gradient(to right, #3498db, #2980b9);
-          color: white;
-        }
-        th, td {
-          padding: 15px;
-          text-align: center;
-          border-bottom: 1px solid #ddd;
-        }
-        tbody tr:hover {
-          background-color: #f0f8ff;
-          transition: 0.3s;
-        }
-        .bus-image {
-          width: 120px;
-          height: 80px;
-          object-fit: cover;
-          border-radius: 10px;
-        }
 
-        /* Modal styling */
-        .overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0,0,0,0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-        .booking-form {
-          background: white;
-          padding: 30px;
-          border-radius: 15px;
-          width: 90%;
-          max-width: 500px;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-          text-align: center;
-        }
-        .bus-image-large {
-          width: 100%;
-          height: 200px;
-          object-fit: cover;
-          border-radius: 10px;
-          margin-bottom: 15px;
-        }
-        .seat-control {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 20px;
-          margin: 20px 0;
-        }
-        .seat-control button {
-          background-color: #3498db;
-          color: white;
-          border: none;
-          font-size: 20px;
-          padding: 10px 15px;
-          border-radius: 50%;
-          cursor: pointer;
-        }
-        .confirm-button {
-          background-color: #2ecc71;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 10px;
-          font-size: 18px;
-          margin-top: 20px;
-          cursor: pointer;
-        }
-        .confirm-button:hover {
-          background-color: #27ae60;
-        }
-        .cancel-button {
-          background-color: #e74c3c;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 10px;
-          font-size: 18px;
-          margin-top: 10px;
-          cursor: pointer;
-        }
-        .cancel-button:hover {
-          background-color: #c0392b;
-        }
-
-          
-
-        
-      `}</style>
     </div>
   );
 }

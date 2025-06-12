@@ -1,73 +1,34 @@
 'use client';
 
 import { FaBusAlt } from "react-icons/fa";
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { CgUser } from 'react-icons/cg';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
-import logo from '../public/assets/Logo.png';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/UserContext';
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
   const router = useRouter();
-
-  const fetchProfile = useCallback(async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    setLoading(true);
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Failed to fetch profile.");
-      setUserInfo(data);
-    } catch (err) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchProfile();
-    window.addEventListener("tokenSet", fetchProfile);
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("tokenSet", fetchProfile);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [fetchProfile]);
+  
+  // Using context instead of local state
+  const { userInfo, loading, error, setUserInfo } = useUserContext();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUserInfo(null);
+    setUserInfo(null); // Clear user info in context
     setShowDropdown(false);
     router.replace('/login');
   };
 
   return (
     <nav>
-      {/* Navbar ke liye bus icon aur brand name */}
       <Link href='/' className='navbar-logo'>
-        <FaBusAlt size={30} color="black" /> {/* Bus icon */}
-        <span className="brand-name">MyBus Service</span> {/* Brand Name */}
+        <FaBusAlt size={30} color="black" />
+        <span className="brand-name">MyBus Service</span>
       </Link>
 
       <ul className='nav-links'>
@@ -101,7 +62,6 @@ const Navbar = () => {
         <RiMenu3Line fontSize={27} onClick={() => setToggleMenu(true)} />
         {toggleMenu && (
           <div className='navbar-smallscreen_overlay'>
-            {/* Logo ko bus icon aur brand name se replace kiya */}
             <Link href='/' className='navbar-logo'>
               <FaBusAlt size={30} color="black" />
               <span className="brand-name">MyBus Service</span>

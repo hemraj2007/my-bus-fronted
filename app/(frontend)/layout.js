@@ -4,8 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 // ✅ Global CSS file import ki gayi hai
 import "./globals.css";
 
-// ✅ StateContext import kiya gaya jo cart/wishlist ke liye use hota hai
-import { StateContext } from "@/context/StateContext"; 
 
 // ✅ UserContext import kiya gaya jo user authentication ke liye use hota hai
 import { UserProvider } from "@/context/UserContext";   
@@ -48,7 +46,7 @@ export default function RootLayout({ children }) {
         <UserProvider>             
 
           {/* ✅ Uske andar cart/wishlist ke liye StateContext wrap kiya */}
-          <StateContext>           
+                  
 
             {/* ✅ Layout container */}
             <div className="layout">
@@ -75,7 +73,7 @@ export default function RootLayout({ children }) {
               <Toaster richColors position="top-center" />
 
             </div>
-          </StateContext>
+          
         </UserProvider>
       </body>
     </html>

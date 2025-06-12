@@ -7,7 +7,6 @@ import { CgUser } from 'react-icons/cg';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import logo from '../public/assets/Logo.png';
 import { useRouter } from 'next/navigation';
-import { useStateContext } from '../context/StateContext';
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);

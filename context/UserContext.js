@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
 
       try {
         // ✅ API call to fetch user profile
-        const res = await fetch("http://127.0.0.1:8000/users/profile", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, // Token header ke through bhejna
             "Content-Type": "application/json",

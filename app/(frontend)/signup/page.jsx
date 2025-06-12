@@ -32,7 +32,7 @@ export default function SignupPage() {
     email: "",
     password: "",
     mob_number: "",
-    role: "user",
+    role: 'user'
   });
 
   const [errors, setErrors] = useState({}); // 🔽 Form field errors store karne ke liye
@@ -90,7 +90,7 @@ export default function SignupPage() {
 
     try {
       // 🔽 FastAPI signup API call
-      const res = await fetch("http://127.0.0.1:8000/auth/register", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -126,16 +126,14 @@ export default function SignupPage() {
           </div>
           <div>
             <Label htmlFor="role">Role</Label>
-            <select
+            <input
+              type="text"
               id="role"
               name="role"
-              value={form.role}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md text-sm"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
+              value="user"
+              readOnly
+              className="w-full p-2 border rounded-md text-sm bg-gray-100 text-gray-700"
+            />
             {errors.role && <p className="text-red-600 text-xs mt-1">{errors.role}</p>}
           </div>
 

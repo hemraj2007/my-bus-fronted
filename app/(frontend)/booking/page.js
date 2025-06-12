@@ -9,6 +9,8 @@ export default function BookingPage() {
   const router = useRouter();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const paymentStatus = searchParams.get("payment");
     const bookingId = searchParams.get("booking_id");
 
@@ -50,7 +52,7 @@ export default function BookingPage() {
     <div className="booking-wrapper">
       <h1 className="booking-heading">My Booking History</h1>
 
-      {searchParams.get("payment") === "success" && (
+      {typeof window !== "undefined" && searchParams.get("payment") === "success" && (
         <div className="booking-success-banner">
           ✅ Booking Successful! Thank you for your purchase.
         </div>

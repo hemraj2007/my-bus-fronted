@@ -22,7 +22,7 @@ const EditTravel = () => {
     const fetchTravel = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:8000/travels/travels/all`);
+        const res = await axios.get(`http://127.0.0.1:8000/travels/all`);
         const travel = res.data.find((item) => item.id === parseInt(id));
 
         if (travel) {
@@ -52,7 +52,7 @@ const EditTravel = () => {
     setLoading(true);
 
     try {
-      await axios.put(`http://localhost:8000/travels/travels/update/${id}`, form);
+      await axios.put(`http://127.0.0.1:8000/travels/update/${id}`, form);
       alert("✅ Travel updated successfully!");
       router.push("/admin/book-now");
     } catch (error) {

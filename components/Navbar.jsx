@@ -13,13 +13,12 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
   const router = useRouter();
-  
-  // Using context instead of local state
+
   const { userInfo, loading, error, setUserInfo } = useUserContext();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUserInfo(null); // Clear user info in context
+    setUserInfo(null);
     setShowDropdown(false);
     router.replace('/login');
   };
@@ -32,11 +31,11 @@ const Navbar = () => {
       </Link>
 
       <ul className='nav-links'>
-        <Link href='/'><li>Home</li></Link>
-        <Link href='/about'><li>About</li></Link>
-        <Link href='/book-now'><li>Book Now</li></Link>
-        <Link href='/booking'><li>Booking</li></Link>
-        <Link href='/contact'><li>Contact Us</li></Link>
+        <li><Link href='/'><span>Home</span></Link></li>
+        <li><Link href='/about'><span>About</span></Link></li>
+        <li><Link href='/book-now'><span>Book Now</span></Link></li>
+        <li><Link href='/booking'><span>Booking</span></Link></li>
+        <li><Link href='/contact'><span>Contact Us</span></Link></li>
       </ul>
 
       {userInfo ? (
@@ -46,9 +45,9 @@ const Navbar = () => {
           </div>
           {showDropdown && (
             <div className='dropdown-menu'>
-              <Link href='/profile'><p>Profile</p></Link>
-              <Link href='/update-password'><p>Update Password</p></Link>
-              <p onClick={handleLogout}>Logout</p>
+              <Link href='/profile'><span>Profile</span></Link>
+              <Link href='/update-password'><span>Update Password</span></Link>
+              <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
             </div>
           )}
         </div>
@@ -68,11 +67,11 @@ const Navbar = () => {
             </Link>
             <RiCloseLine className='close_icon' fontSize={27} onClick={() => setToggleMenu(false)} />
             <ul className='navbar-smallscreen_links'>
-              <Link href='/'><li>Home</li></Link>
-              <Link href='/about'><li>About</li></Link>
-              <Link href='/book-now'><li>Book Now</li></Link>
-              <Link href='/booking'><li>Booking</li></Link>
-              <Link href='/contact'><li>Contact Us</li></Link>
+              <li><Link href='/'><span>Home</span></Link></li>
+              <li><Link href='/about'><span>About</span></Link></li>
+              <li><Link href='/book-now'><span>Book Now</span></Link></li>
+              <li><Link href='/booking'><span>Booking</span></Link></li>
+              <li><Link href='/contact'><span>Contact Us</span></Link></li>
             </ul>
           </div>
         )}

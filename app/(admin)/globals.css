@@ -995,3 +995,135 @@ input {
   font-weight: 500;
   color: #1f2937;
 }
+
+
+/* admin login */
+
+/* Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f9f9f9;
+  padding: 20px;
+}
+
+/* Card Styling */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: white;
+}
+
+/* Card Content */
+.login-card-content {
+  padding: 30px;
+}
+
+/* Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-fields .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Input Label */
+.login-form label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Error Message */
+.error-message {
+  color: #d10000;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.center-text {
+  text-align: center;
+}
+
+/* Button */
+.submit-button {
+  width: 100%;
+  background-color: #0070f3;
+  color: white;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #0059c1;
+}
+
+.submit-button:disabled {
+  background-color: #7aaef5;
+  cursor: not-allowed;
+}
+
+/* Loading Spinner */
+.loading-icon {
+  margin-right: 8px;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* contact */
+
+.contact-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contact-card {
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}

@@ -64,7 +64,7 @@ export default function SuccessPay() {
   return (
     <div className="container">
       <h1>Processing Your Booking...</h1>
-      <p>Kripya wait karein, hum aapki booking confirm kar rahe hain</p>
+      <p>Please wait, we are confirming your booking.</p>
     </div>
   );
 }

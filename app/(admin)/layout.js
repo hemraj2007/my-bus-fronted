@@ -99,6 +99,8 @@ function AdminLayout({ children }) {
                         <li><Link href="/admin/dashboard">Dashboard</Link></li>
                         <li><Link href="/admin/book-now">Travels</Link></li>
                         <li><Link href="/admin/booking">Booking</Link></li>
+                        <li><Link href="/admin/contact">Contact</Link></li>
+
                       </ul>
                     </nav>
                   </div>

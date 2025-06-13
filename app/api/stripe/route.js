@@ -42,10 +42,10 @@ export async function POST(req) {
 
   } catch (error) {
     console.error("Stripe Error:", error);
-    return Response.json({ 
+    return Response.json({
       error: error.message,
       type: error.type,
-      code: error.code 
+      code: error.code
     }, { status: 500 });
   }
 }

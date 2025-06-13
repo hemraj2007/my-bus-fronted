@@ -22,8 +22,11 @@ export async function POST(req) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/successPay?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/book-now`,
+
+      // ✅ Yeh env variables se set hoga
+      success_url: process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL,
+      cancel_url: process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL,
+
       metadata: {
         user_id: user_id.toString(),
         bus_id: bus_id.toString(),

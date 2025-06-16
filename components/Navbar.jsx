@@ -39,23 +39,24 @@ const Navbar = () => {
       </ul>
 
       {userInfo ? (
-        <div className='user-dropdown' ref={dropdownRef}>
-          <div className='user-info' onClick={() => setShowDropdown(!showDropdown)}>
+        <div className='user-dropdown-wrapper' ref={dropdownRef}>
+          <div className='user-dropdown-toggle' onClick={() => setShowDropdown(!showDropdown)}>
             <CgUser size={22} /><span>{userInfo.name}</span>
           </div>
           {showDropdown && (
-            <div className='dropdown-menu'>
+            <div className='user-dropdown-menu'>
               <Link href='/profile'><span>Profile</span></Link>
               <Link href='/update-password'><span>Update Password</span></Link>
               <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
             </div>
           )}
         </div>
-      ) : (
-        <Link href='/login'>
-          <button className='login'><CgUser size={22} /><span>Login</span></button>
-        </Link>
-      )}
+      )
+        : (
+          <Link href='/login'>
+            <button className='login'><CgUser size={22} /><span>Login</span></button>
+          </Link>
+        )}
 
       <div className='navbar-smallscreen'>
         <RiMenu3Line fontSize={27} onClick={() => setToggleMenu(true)} />

@@ -4659,3 +4659,74 @@ tbody tr:hover {
           color: #2c3e50;
           margin-bottom: 8px;
         }
+
+
+
+
+
+
+        /* Wrapper for user dropdown */
+.user-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* The top bar with user icon and name */
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-dropdown-toggle:hover {
+  background-color: #e0e0e0;
+}
+
+/* The dropdown menu */
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+/* Each link inside the dropdown */
+.user-dropdown-menu span,
+.user-dropdown-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.user-dropdown-menu span:hover,
+.user-dropdown-menu a:hover {
+  background-color: #f0f0f0;
+  color: #000;
+  cursor: pointer;
+}
+
+/* Optional: Add a little arrow on top */
+.user-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
